@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🩵 For Alan 🤍</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #ff6fae, #ff3f6c);
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: white;
+  text-align: center;
+}
+
+/* Floating hearts */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 20px;
+  animation: floatUp linear infinite;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-120vh) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Layout */
+.container {
+  padding: 40px 15px;
+}
+
+.name {
+  font-size: clamp(2.5rem, 6vw, 3.8rem);
+  color: #7fd7ff;
+  text-shadow: 0 0 10px #7fd7ff, 0 0 25px #7fd7ff;
+  margin-bottom: 20px;
+}
+
+/* Photo */
+.photo {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 20px;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 3px solid rgba(255,255,255,0.4);
+  box-shadow: 0 0 20px rgba(255,255,255,0.25);
+  animation: floatPic 3s ease-in-out infinite;
+  cursor: pointer;
+  position: relative;
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes floatPic {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Photo message */
+.photo-message {
+  margin-top: 10px;
+  font-size: 1.1rem;
+  color: #e9f9ff;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.4s ease;
+}
+
+.photo-message.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Card */
+.card {
+  background: rgba(255,255,255,0.18);
+  border-radius: 22px;
+  padding: 25px;
+  max-width: 600px;
+  margin: auto;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 35px rgba(0,0,0,0.25);
+}
+
+.letter {
+  font-size: clamp(1rem, 3.5vw, 1.15rem);
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
+button {
+  background: linear-gradient(45deg, #7fd7ff, #4da3ff);
+  border: none;
+  border-radius: 35px;
+  padding: 14px 32px;
+  font-size: 1.1rem;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 18px #7fd7ff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 28px #7fd7ff;
+}
+
+#secret {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #e9f9ff;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.5s ease;
+}
+
+#secret.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Mini game */
+.game {
+  margin-top: 25px;
+  padding: 15px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 16px;
+}
+
+.score {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.game-area {
+  position: relative;
+  height: 180px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.15);
+  overflow: hidden;
+}
+
+.tap-heart {
+  position: absolute;
+  font-size: 26px;
+  cursor: pointer;
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Music */
+.music {
+  margin-top: 25px;
+  font-size: 0.95rem;
+  opacity: 0.95;
+  line-height: 1.6;
+}
+
+/* Confetti hearts */
+.confetti {
+  position: fixed;
+  top: -20px;
+  font-size: 18px;
+  animation: confettiFall linear forwards;
+  pointer-events: none;
+}
+
+@keyframes confettiFall {
+  to {
+    transform: translateY(120vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="name">Alan 🩵</div>
+
+  <!-- PHOTO -->
+  <div class="photo" onclick="photoSurprise()">
+    <img src="us.png" alt="Us together XD 🩵🤍">
+  </div>
+  <div class="photo-message" id="photoMsg">
+    This is my favorite picture because we're in it ^^ 💖
+  </div>
+
+  <div class="card">
+    <div class="letter">
+      Dear Alan,<br><br>
+      From the moment you came into my life, everything felt warmer, brighter,
+      and more alive. You make me feel safe, loved, and understood in ways
+      I never knew were possible.<br><br>
+
+      I love how passionate you are... especially about games, music,
+      and being unapologetically yourself. Loving you is easy. I hope that today is filled with the same joy you bring into my life.<br><br>
+
+      Your heart is fragile and sensitive just like mine, but I'm as careful as possible with it. Happy Valentine's Day! 💖
+    </div>
+
+    <button onclick="unlockLove()">💘 Click for a secret</button>
+
+    <div id="secret">
+      🩵 Secret 🤍<br>
+      <strong>All I need in this life is you and me. Oh, and WiFi. And wine. And snacks. But that’s it, I swear.<br>
+      I’m yours. Sorry, no refunds or exchanges. I know loving me isn’t always the easiest. But trust me, I’m worth it.</strong> 💖
+    </div>
+
+    <!-- MINI GAME -->
+    <div class="game">
+      <div class="score">💝 Hearts collected: <span id="score">0</span></div>
+      <div class="game-area" id="gameArea"></div>
+    </div>
+
+    <div class="music">
+      🎵 Your favorite songs:<br><br>
+      • <em>Feel Alone</em> — Juice WRLD<br>
+      • <em>Creepin'</em> — Metro Boomin, The Weeknd & 21 Savage<br>
+      • <em>Castle</em> — Clarx, Harddope<br>
+      • <em>Love The Way You Lie</em> — Eminem & Rihanna<br>
+      • <em>Drivers License</em> — Olivia Rodrigo
+    </div>
+  </div>
+</div>
+
+<script>
+function unlockLove() {
+  document.getElementById("secret").classList.add("show");
+  burstHearts();
+  confettiHearts();
+}
+
+/* Photo hidden message */
+function photoSurprise() {
+  const msg = document.getElementById("photoMsg");
+  msg.classList.toggle("show");
+  confettiHearts();
+}
+
+/* Floating hearts background */
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = Math.random() * 20 + 16 + "px";
+  heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 7000);
+}, 300);
+
+/* Burst hearts */
+function burstHearts() {
+  for (let i = 0; i < 25; i++) {
+    const heart = document.createElement("div");
+    heart.innerHTML = "🩵";
+    heart.style.position = "fixed";
+    heart.style.left = "50%";
+    heart.style.top = "50%";
+    heart.style.fontSize = Math.random() * 18 + 16 + "px";
+    heart.style.transform = "translate(-50%, -50%)";
+    heart.style.transition = "all 1s ease";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.top = Math.random() * 100 + "vh";
+      heart.style.opacity = "0";
+    }, 50);
+
+    setTimeout(() => heart.remove(), 1200);
+  }
+
+  if (navigator.vibrate) navigator.vibrate(80);
+}
+
+/* Confetti hearts */
+function confettiHearts() {
+  for (let i = 0; i < 40; i++) {
+    const heart = document.createElement("div");
+    heart.className = "confetti";
+    heart.innerHTML = ["💝","🩵","💘","🤍"][Math.floor(Math.random()*4)];
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 16 + 14 + "px";
+    heart.style.animationDuration = Math.random() * 2 + 2 + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 3000);
+  }
+}
+
+/* Mini game */
+let score = 0;
+const gameArea = document.getElementById("gameArea");
+
+function spawnHeart() {
+  const heart = document.createElement("div");
+  heart.className = "tap-heart";
+  heart.innerHTML = "💝";
+  heart.style.left = Math.random() * 85 + "%";
+  heart.style.top = Math.random() * 75 + "%";
+
+  heart.onclick = () => {
+    score++;
+    document.getElementById("score").textContent = score;
+    heart.remove();
+    burstHearts();
+  };
+
+  gameArea.appendChild(heart);
+
+  setTimeout(() => {
+    if (heart.parentNode) heart.remove();
+  }, 2000);
+}
+
+setInterval(spawnHeart, 800);
+</script>
+
+</body>
+</html>
