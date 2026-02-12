@@ -32,7 +32,7 @@ body {
   justify-content: center;
   z-index: 9999;
   opacity: 1;
-  transition: opacity 0.8s ease;
+  transition: opacity 0.9s ease;
 }
 
 .lock-screen.hide {
@@ -48,8 +48,6 @@ body {
   width: 90%;
   max-width: 340px;
   box-shadow: 0 0 35px rgba(0,0,0,0.35);
-  opacity: 1;
-  transition: opacity 0.8s ease;
 }
 
 .lock-title {
@@ -60,7 +58,14 @@ body {
 .lock-sub {
   font-size: 0.95rem;
   opacity: 0.9;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
+}
+
+.lock-countdown {
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+  color: #e9f9ff;
+  text-shadow: 0 0 10px rgba(255,255,255,0.4);
 }
 
 .lock-box input {
@@ -108,7 +113,7 @@ body {
   padding: 40px 15px;
   display: none;
   opacity: 0;
-  transition: opacity 0.8s ease;
+  transition: opacity 0.9s ease;
 }
 
 .container.show {
@@ -234,7 +239,7 @@ button:hover {
   overflow: hidden;
   touch-action: none;
   cursor: pointer;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  box-shadow: 0 0 18px #7fd7ff;
 }
 
 .scratch-text {
@@ -253,7 +258,7 @@ button:hover {
 .scratch-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(45deg, #7fd7ff, #4da3ff); /* MATCH SECRET BUTTON */
+  background: linear-gradient(45deg, #7fd7ff, #4da3ff);
   z-index: 2;
 }
 
@@ -285,7 +290,33 @@ button:hover {
   animation: pop 0.3s ease;
 }
 
-@keyframes pop { from { transform: scale(0.5); opacity:0;} to { transform: scale(1); opacity:1;} }
+@keyframes pop {
+  from { transform: scale(0.5); opacity:0;}
+  to { transform: scale(1); opacity:1;}
+}
+
+/* ================= COMBO POPUP ================= */
+.combo-popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.7);
+  background: linear-gradient(45deg, #7fd7ff, #4da3ff);
+  padding: 14px 28px;
+  border-radius: 40px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 0 25px #7fd7ff;
+  opacity: 0;
+  transition: all 0.4s ease;
+  z-index: 9999;
+}
+
+.combo-popup.show {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
 
 /* ================= MUSIC ================= */
 .music {
@@ -316,7 +347,8 @@ button:hover {
 <div class="lock-screen" id="lockScreen">
   <div class="lock-box">
     <div class="lock-title">💝 Valentine’s Surprise</div>
-    <div class="lock-sub">Enter the password I gave you 💌</div>
+    <div class="lock-sub">Enter the password I gave you XD 💌</div>
+    <div class="lock-countdown" id="lockCountdown">⏳ Loading Valentine’s countdown...</div>
     <input type="password" id="passwordInput" placeholder="Password...">
     <button onclick="checkPassword()">Unlock 💖</button>
     <div class="lock-error" id="lockError">Wrong password 😭</div>
@@ -329,7 +361,7 @@ button:hover {
 
   <!-- PHOTO -->
   <div class="photo" onclick="photoSurprise()">
-    <img src="us.png" alt="Us together XD 🩵🤍">
+    <img src="us.png" alt="Us together 🩵🤍">
   </div>
   <div class="photo-message" id="photoMsg">
     This is my favorite picture because we're in it ^^ 💖
@@ -369,7 +401,7 @@ button:hover {
     <div class="scratch-container">
       <div style="margin-bottom:8px;">💌 Scratch to reveal</div>
       <div class="scratch-card" id="scratchCard">
-        <div class="scratch-text">I choose you. Always. 💖</div>
+        <div class="scratch-text">I MIGHT rape you 😭🙏</div>
         <div class="scratch-overlay" id="scratchOverlay"></div>
       </div>
     </div>
@@ -391,9 +423,12 @@ button:hover {
   </div>
 </div>
 
+<!-- ================= COMBO POPUP ================= -->
+<div class="combo-popup" id="comboPopup">💖 COMBO x10!</div>
+
 <script>
 /* ================= PASSWORD ================= */
-const correctPassword = "alan<3";
+const correctPassword = "alan<3;v26";
 
 function checkPassword(){
   const input = document.getElementById("passwordInput").value;
@@ -403,40 +438,46 @@ function checkPassword(){
 
   if(input === correctPassword){
     lockScreen.classList.add("hide");
-    setTimeout(()=> mainContent.classList.add("show"), 800);
+    setTimeout(() => mainContent.classList.add("show"), 900);
   } else {
     error.classList.add("show");
-    setTimeout(()=>error.classList.remove("show"),1500);
+    setTimeout(() => error.classList.remove("show"), 1500);
   }
 }
 
-/* ================= COUNTDOWN / SINCE VALENTINE ================= */
-const valentinesDate = new Date(new Date().getFullYear(),1,14,0,0,0);
+/* ================= COUNTDOWN → TIME SINCE VALENTINE ================= */
+const valentinesDate = new Date(new Date().getFullYear(), 1, 14, 0, 0, 0);
+
 function updateCountdown(){
   const now = new Date();
+  const elMain = document.getElementById("countdown");
+  const elLock = document.getElementById("lockCountdown");
   let diff = valentinesDate - now;
-  const el = document.getElementById("countdown");
 
-  let prefix="", days,hours,minutes,seconds;
-  if(diff>=0){
-    prefix="⏳ Valentine’s Day in ";
+  diff = Math.abs(diff);
+
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor(diff / (1000*60*60)) % 24;
+  const minutes = Math.floor(diff / (1000*60)) % 60;
+  const seconds = Math.floor(diff / 1000) % 60;
+
+  let text = "";
+
+  if(now < valentinesDate){
+    text = `⏳ Valentine’s Day in <strong>${days}</strong>d <strong>${hours}</strong>h <strong>${minutes}</strong>m <strong>${seconds}</strong>s 💖`;
   } else {
-    diff = now - valentinesDate;
-    prefix="💖 It's been ";
+    text = `⏳ It’s been <strong>${days}</strong>d <strong>${hours}</strong>h <strong>${minutes}</strong>m <strong>${seconds}</strong>s since Valentine’s Day 2026 💖`;
   }
 
-  days = Math.floor(diff/(1000*60*60*24));
-  hours = Math.floor(diff/(1000*60*60))%24;
-  minutes = Math.floor(diff/(1000*60))%60;
-  seconds = Math.floor(diff/1000)%60;
-
-  el.innerHTML = `${prefix}<strong>${days}</strong>d <strong>${hours}</strong>h <strong>${minutes}</strong>m <strong>${seconds}</strong>s`;
+  elMain.innerHTML = text;
+  elLock.innerHTML = text;
 }
-setInterval(updateCountdown,1000);
+
+setInterval(updateCountdown, 1000);
 updateCountdown();
 
 /* ================= TIME TOGETHER ================= */
-const startDate = new Date("2024-06-01T00:00:00");
+const startDate = new Date("2025-08-10T00:00:00");
 
 function updateCounter(){
   const now = new Date();
@@ -461,19 +502,19 @@ function unlockLove(){
 
 /* ================= PHOTO ================= */
 function photoSurprise(){
-  const msg=document.getElementById("photoMsg");
+  const msg = document.getElementById("photoMsg");
   msg.classList.toggle("show");
   confettiHearts();
 }
 
 /* ================= FLOATING HEARTS ================= */
 setInterval(()=>{
-  const heart=document.createElement("div");
-  heart.className="heart";
-  heart.innerHTML="💖";
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.fontSize=Math.random()*20+16+"px";
-  heart.style.animationDuration=Math.random()*3+4+"s";
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random()*100 + "vw";
+  heart.style.fontSize = Math.random()*20 + 16 + "px";
+  heart.style.animationDuration = Math.random()*3 + 4 + "s";
   document.body.appendChild(heart);
   setTimeout(()=>heart.remove(),7000);
 },300);
@@ -481,19 +522,19 @@ setInterval(()=>{
 /* ================= BURST HEARTS ================= */
 function burstHearts(){
   for(let i=0;i<25;i++){
-    const heart=document.createElement("div");
-    heart.innerHTML="🩵";
-    heart.style.position="fixed";
-    heart.style.left="50%";
-    heart.style.top="50%";
-    heart.style.fontSize=Math.random()*18+16+"px";
-    heart.style.transform="translate(-50%,-50%)";
-    heart.style.transition="all 1s ease";
+    const heart = document.createElement("div");
+    heart.innerHTML = "🩵";
+    heart.style.position = "fixed";
+    heart.style.left = "50%";
+    heart.style.top = "50%";
+    heart.style.fontSize = Math.random()*18 + 16 + "px";
+    heart.style.transform = "translate(-50%,-50%)";
+    heart.style.transition = "all 1s ease";
     document.body.appendChild(heart);
     setTimeout(()=>{
-      heart.style.left=Math.random()*100+"vw";
-      heart.style.top=Math.random()*100+"vh";
-      heart.style.opacity="0";
+      heart.style.left = Math.random()*100 + "vw";
+      heart.style.top = Math.random()*100 + "vh";
+      heart.style.opacity = "0";
     },50);
     setTimeout(()=>heart.remove(),1200);
   }
@@ -503,36 +544,80 @@ function burstHearts(){
 /* ================= CONFETTI ================= */
 function confettiHearts(){
   for(let i=0;i<40;i++){
-    const heart=document.createElement("div");
-    heart.className="confetti";
-    heart.innerHTML=["💝","🩵","💘","🤍"][Math.floor(Math.random()*4)];
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.fontSize=Math.random()*16+14+"px";
-    heart.style.animationDuration=Math.random()*2+2+"s";
+    const heart = document.createElement("div");
+    heart.className = "confetti";
+    heart.innerHTML = ["💝","🩵","💘","🤍"][Math.floor(Math.random()*4)];
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.fontSize = Math.random()*16 + 14 + "px";
+    heart.style.animationDuration = Math.random()*2 + 2 + "s";
     document.body.appendChild(heart);
     setTimeout(()=>heart.remove(),3000);
   }
 }
+
 function confettiFlowers(){
-  const flowers=["🌸","🌺","🌼","🌷","💐"];
+  const flowers = ["🌸","🌺","🌼","🌷","💐"];
   for(let i=0;i<50;i++){
-    const f=document.createElement("div");
-    f.className="confetti";
-    f.innerHTML=flowers[Math.floor(Math.random()*flowers.length)];
-    f.style.left=Math.random()*100+"vw";
-    f.style.fontSize=Math.random()*18+16+"px";
-    f.style.animationDuration=Math.random()*2+2+"s";
+    const f = document.createElement("div");
+    f.className = "confetti";
+    f.innerHTML = flowers[Math.floor(Math.random()*flowers.length)];
+    f.style.left = Math.random()*100 + "vw";
+    f.style.fontSize = Math.random()*18 + 16 + "px";
+    f.style.animationDuration = Math.random()*2 + 2 + "s";
     document.body.appendChild(f);
     setTimeout(()=>f.remove(),3000);
   }
 }
 
 /* ================= SCRATCH ================= */
-const overlay=document.getElementById("scratchOverlay");
-const scratchCard=document.getElementById("scratchCard");
-let scratched=false;
+const overlay = document.getElementById("scratchOverlay");
+const scratchCard = document.getElementById("scratchCard");
+let scratched = false;
+
 scratchCard.addEventListener("pointerdown",()=>{
+  confettiFlowers();
+  burstHearts();
+
   if(scratched) return;
-  scratched=true;
-  overlay.style.transition="opacity 0.6s ease";
-  overlay.style
+  scratched = true;
+  overlay.style.transition = "opacity 0.6s ease";
+  overlay.style.opacity = "0";
+  setTimeout(()=>overlay.style.display="none",600);
+});
+
+/* ================= MINI GAME ================= */
+let score = 0;
+const gameArea = document.getElementById("gameArea");
+const comboPopup = document.getElementById("comboPopup");
+
+function showCombo(){
+  comboPopup.textContent = `💖 COMBO x${score}!`;
+  comboPopup.classList.add("show");
+  confettiFlowers();
+  setTimeout(()=>comboPopup.classList.remove("show"), 2000);
+}
+
+function spawnHeart(){
+  const heart = document.createElement("div");
+  heart.className = "tap-heart";
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random()*85 + "%";
+  heart.style.top = Math.random()*70 + "%";
+  gameArea.appendChild(heart);
+  heart.addEventListener("click",()=>{
+    score++;
+    document.getElementById("score").textContent = score;
+    heart.remove();
+    burstHearts();
+
+    if(score % 10 === 0){
+      showCombo();
+    }
+  });
+  setTimeout(()=>heart.remove(),2000);
+}
+setInterval(spawnHeart,700);
+</script>
+
+</body>
+</html>
