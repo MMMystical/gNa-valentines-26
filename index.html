@@ -22,68 +22,7 @@ body {
   text-align: center;
 }
 
-/* ================= PASSWORD SCREEN ================= */
-.lock-screen {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(135deg, #ff6fae, #ff3f6c);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.lock-box {
-  background: rgba(255,255,255,0.18);
-  padding: 28px 24px;
-  border-radius: 22px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 0 40px rgba(0,0,0,0.3);
-  max-width: 320px;
-  width: 100%;
-}
-
-.lock-title {
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-  color: #7fd7ff;
-  text-shadow: 0 0 10px #7fd7ff;
-}
-
-.lock-sub {
-  font-size: 0.95rem;
-  margin-bottom: 14px;
-  opacity: 0.95;
-}
-
-.lock-box input {
-  width: 100%;
-  padding: 10px 14px;
-  border-radius: 14px;
-  border: none;
-  font-size: 1rem;
-  margin-bottom: 12px;
-  outline: none;
-}
-
-.lock-box button {
-  width: 100%;
-  margin-top: 0;
-}
-
-.lock-error {
-  font-size: 0.9rem;
-  color: #ffe6ee;
-  margin-top: 8px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.lock-error.show {
-  opacity: 1;
-}
-
-/* ================= FLOATING HEARTS ================= */
+/* Floating hearts */
 .heart {
   position: fixed;
   bottom: -20px;
@@ -104,7 +43,7 @@ body {
   }
 }
 
-/* ================= LAYOUT ================= */
+/* Layout */
 .container {
   padding: 40px 15px;
 }
@@ -113,17 +52,17 @@ body {
   font-size: clamp(2.5rem, 6vw, 3.8rem);
   color: #7fd7ff;
   text-shadow: 0 0 10px #7fd7ff, 0 0 25px #7fd7ff;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .countdown {
-  font-size: 1.1rem;
-  margin-bottom: 22px;
+  font-size: 1.05rem;
+  margin-bottom: 18px;
   color: #e9f9ff;
-  text-shadow: 0 0 10px rgba(255,255,255,0.4);
+  text-shadow: 0 0 8px rgba(255,255,255,0.6);
 }
 
-/* ================= PHOTO ================= */
+/* Photo */
 .photo {
   width: 180px;
   height: 180px;
@@ -148,6 +87,7 @@ body {
   50% { transform: translateY(-6px); }
 }
 
+/* Photo message */
 .photo-message {
   margin-top: 10px;
   font-size: 1.1rem;
@@ -162,7 +102,7 @@ body {
   transform: scale(1);
 }
 
-/* ================= CARD ================= */
+/* Card */
 .card {
   background: rgba(255,255,255,0.18);
   border-radius: 22px;
@@ -173,19 +113,19 @@ body {
   box-shadow: 0 0 35px rgba(0,0,0,0.25);
 }
 
-.letter, .counter, .secret-text, .scratch-text, .photo-message, .music {
-  white-space: pre-wrap;
-}
-
-/* ================= COUNTER ================= */
 .counter {
-  font-size: 1.15rem;
-  margin-bottom: 18px;
+  font-size: 1.05rem;
+  margin-bottom: 15px;
   color: #e9f9ff;
-  text-shadow: 0 0 10px rgba(255,255,255,0.4);
+  text-shadow: 0 0 8px rgba(255,255,255,0.6);
 }
 
-/* ================= BUTTONS ================= */
+.letter {
+  font-size: clamp(1rem, 3.5vw, 1.15rem);
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
 button {
   background: linear-gradient(45deg, #7fd7ff, #4da3ff);
   border: none;
@@ -217,23 +157,20 @@ button:hover {
   transform: scale(1);
 }
 
-/* ================= SCRATCH CARD ================= */
+/* Scratch card */
 .scratch-container {
   margin-top: 25px;
-  position: relative;
 }
 
 .scratch-card {
   width: 260px;
-  height: 90px;
+  height: 110px;
   margin: auto;
-  background: linear-gradient(45deg, #7fd7ff, #4da3ff);
-  border-radius: 14px;
+  border-radius: 18px;
   position: relative;
   overflow: hidden;
-  touch-action: none;
-  cursor: pointer;
-  box-shadow: 0 0 20px #7fd7ff;
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+  background: linear-gradient(45deg, #7fd7ff, #4da3ff);
 }
 
 .scratch-text {
@@ -242,11 +179,11 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: white;
-  background: rgba(255,255,255,0.15);
-  border-radius: 14px;
-  z-index: 1;
+  padding: 15px;
+  text-align: center;
+  opacity: 0;
 }
 
 .scratch-overlay {
@@ -254,15 +191,21 @@ button:hover {
   inset: 0;
   background: repeating-linear-gradient(
     45deg,
-    rgba(255,255,255,0.4),
-    rgba(255,255,255,0.4) 10px,
-    rgba(255,255,255,0.25) 10px,
-    rgba(255,255,255,0.25) 20px
+    rgba(255,255,255,0.35),
+    rgba(255,255,255,0.35) 8px,
+    rgba(255,255,255,0.15) 8px,
+    rgba(255,255,255,0.15) 16px
   );
-  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  user-select: none;
 }
 
-/* ================= MINI GAME ================= */
+/* Mini game */
 .game {
   margin-top: 25px;
   padding: 15px;
@@ -295,7 +238,7 @@ button:hover {
   to { transform: scale(1); opacity: 1; }
 }
 
-/* ================= MUSIC ================= */
+/* Music */
 .music {
   margin-top: 25px;
   font-size: 0.95rem;
@@ -303,7 +246,7 @@ button:hover {
   line-height: 1.6;
 }
 
-/* ================= CONFETTI ================= */
+/* Confetti hearts */
 .confetti {
   position: fixed;
   top: -20px;
@@ -318,12 +261,67 @@ button:hover {
     opacity: 0;
   }
 }
+
+/* Lock screen */
+.lock-screen {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #ff6fae, #ff3f6c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.lock-box {
+  background: rgba(255,255,255,0.18);
+  padding: 28px;
+  border-radius: 22px;
+  width: 85%;
+  max-width: 320px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 30px rgba(0,0,0,0.25);
+}
+
+.lock-title {
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+  text-shadow: 0 0 10px rgba(255,255,255,0.8);
+}
+
+.lock-sub {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  margin-bottom: 15px;
+}
+
+.lock-box input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.lock-error {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: #ffe0e0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lock-error.show {
+  opacity: 1;
+}
 </style>
 </head>
 
 <body>
 
-<!-- ================= PASSWORD SCREEN ================= -->
+<!-- LOCK SCREEN -->
 <div class="lock-screen" id="lockScreen">
   <div class="lock-box">
     <div class="lock-title">💝 Valentine’s Surprise</div>
@@ -335,24 +333,20 @@ button:hover {
 </div>
 
 <div class="container" id="mainContent" style="display:none;">
-  <div class="name type" id="nameText">Alan 🩵</div>
-  <div class="countdown type" id="countdownText">⏳ Countdown to Valentine’s Day...</div>
+  <div class="name" id="nameText" data-text="Alan 🩵"></div>
+  <div class="countdown" id="countdownText"></div>
 
   <!-- PHOTO -->
   <div class="photo" onclick="photoSurprise()">
     <img src="us.png" alt="Us together XD 🩵🤍">
   </div>
-  <div class="photo-message" id="photoMsg">
-    This is my favorite picture because we're in it ^^ 💖
-  </div>
+  <div class="photo-message" id="photoMsg" data-text="This is my favorite picture because we're in it ^^ 💖"></div>
 
   <div class="card">
 
-    <!-- TIME TOGETHER -->
-    <div class="counter type" id="counterText">💞 Together for ...</div>
+    <div class="counter" id="counterText"></div>
 
-    <div class="letter type" id="letterText">
-Dear Alan,
+    <div class="letter" id="letterText" data-text="Dear Alan,
 
 From the moment you came into my life, everything felt warmer, brighter,
 and more alive. You make me feel safe, loved, and understood in ways
@@ -361,26 +355,23 @@ I never knew were possible.
 I love how passionate you are... especially about games, music,
 and being unapologetically yourself. Loving you is easy. I hope that today is filled with the same joy you bring into my life.
 
-Your heart is fragile and sensitive just like mine, but I'm as careful as possible with it. Happy Valentine's Day! 💖
-    </div>
+Your heart is fragile and sensitive just like mine, but I'm as careful as possible with it. Happy Valentine's Day! 💖"></div>
 
     <button onclick="unlockLove()">💘 Click for a secret</button>
 
     <div id="secret">
-      <div class="secret-text" id="secretText">
-🩵 Secret 🤍
+      <div id="secretText" data-text="🩵 Secret 🤍
 
 All I need in this life is you and me. Oh, and WiFi. And wine. And snacks. But that’s it, I swear.
-I’m yours. Sorry, no refunds or exchanges. I know loving me isn’t always the easiest. But trust me, I’m worth it. 💖
-      </div>
+I’m yours. Sorry, no refunds or exchanges. I know loving me isn’t always the easiest. But trust me, I’m worth it. 💖"></div>
     </div>
 
-    <!-- SCRATCH TO REVEAL -->
+    <!-- SCRATCH CARD -->
     <div class="scratch-container">
       <div style="margin-bottom:8px;">💌 Scratch to reveal</div>
       <div class="scratch-card" id="scratchCard">
-        <div class="scratch-text" id="scratchText">I choose you. Always. 💖</div>
-        <div class="scratch-overlay" id="scratchOverlay"></div>
+        <div class="scratch-text" id="scratchText" data-text="I choose you. Always. 💖"></div>
+        <div class="scratch-overlay" id="scratchOverlay">Scratch 💕</div>
       </div>
     </div>
 
@@ -390,26 +381,24 @@ I’m yours. Sorry, no refunds or exchanges. I know loving me isn’t always the
       <div class="game-area" id="gameArea"></div>
     </div>
 
-    <div class="music type" id="musicText">
-🎵 Your favorite songs:
+    <div class="music" id="musicText" data-text="🎵 Your favorite songs:
 
 • Feel Alone — Juice WRLD
 • Creepin' — Metro Boomin, The Weeknd & 21 Savage
 • Castle — Clarx, Harddope
 • Love The Way You Lie — Eminem & Rihanna
-• Drivers License — Olivia Rodrigo
-    </div>
+• Drivers License — Olivia Rodrigo"></div>
+
   </div>
 </div>
 
 <script>
-/* ================= PASSWORD SYSTEM ================= */
-const correctPassword = "alan<3"; // CHANGE THIS
+// ===== PASSWORD =====
+const correctPassword = "alan<3"; // change this to whatever you want
 
 function checkPassword() {
   const input = document.getElementById("passwordInput").value;
   const error = document.getElementById("lockError");
-
   if (input === correctPassword) {
     document.getElementById("lockScreen").style.display = "none";
     document.getElementById("mainContent").style.display = "block";
@@ -420,84 +409,82 @@ function checkPassword() {
   }
 }
 
-/* ================= TYPEWRITER EFFECT ================= */
-function typeWriter(element, speed = 18) {
-  const text = element.innerText;
-  element.innerText = "";
+// ===== TYPEWRITER (SAFE — DOES NOT BREAK STYLES) =====
+function typeWriter(el, speed = 18) {
+  const text = el.dataset.text || "";
+  el.textContent = "";
   let i = 0;
   const interval = setInterval(() => {
-    element.innerText += text.charAt(i);
+    el.textContent += text.charAt(i);
     i++;
     if (i >= text.length) clearInterval(interval);
   }, speed);
 }
 
 function startTyping() {
-  document.querySelectorAll(".type").forEach((el, i) => {
-    setTimeout(() => typeWriter(el), i * 300);
-  });
+  typeWriter(document.getElementById("nameText"), 60);
+  setTimeout(() => typeWriter(document.getElementById("letterText")), 400);
+  setTimeout(() => typeWriter(document.getElementById("musicText")), 1600);
 }
 
-/* ================= COUNTDOWN TO VALENTINE'S ================= */
-const valentines = new Date(new Date().getFullYear(), 1, 14, 0, 0, 0);
+// ===== COUNTDOWN =====
+const valentines = new Date(new Date().getFullYear(), 1, 14);
 
 function updateCountdown() {
-  const now = new Date();
-  let diff = valentines - now;
+  const now = Date.now();
+  const diff = valentines - now;
 
   if (diff <= 0) {
-    document.getElementById("countdownText").innerHTML = "💖 Happy Valentine's Day, Alan! 💖";
+    document.getElementById("countdownText").textContent =
+      "💖 Happy Valentine's Day, Alan! 💖";
     return;
   }
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
-  const minutes = Math.floor(diff / (1000 * 60)) % 60;
-  const seconds = Math.floor(diff / 1000) % 60;
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor(diff / 3600000) % 24;
+  const m = Math.floor(diff / 60000) % 60;
+  const s = Math.floor(diff / 1000) % 60;
 
-  document.getElementById("countdownText").innerHTML =
-    `💘 Valentine’s Day in ${days}d ${hours}h ${minutes}m ${seconds}s 💘`;
+  document.getElementById("countdownText").textContent =
+    `💘 Valentine’s Day in ${d}d ${h}h ${m}m ${s}s 💘`;
 }
 
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-/* ================= TIME TOGETHER COUNTER ================= */
-const startDate = new Date("2024-06-01T00:00:00"); // CHANGE THIS
+// ===== TOGETHER COUNTER =====
+const startDate = new Date("2024-06-01T00:00:00"); // change to your real date
 
 function updateCounter() {
-  const now = new Date();
-  let diff = now - startDate;
+  const now = Date.now();
+  const diff = now - startDate;
 
-  const seconds = Math.floor(diff / 1000) % 60;
-  const minutes = Math.floor(diff / 1000 / 60) % 60;
-  const hours = Math.floor(diff / 1000 / 60 / 60) % 24;
-  const days = Math.floor(diff / 1000 / 60 / 60 / 24);
+  const s = Math.floor(diff / 1000) % 60;
+  const m = Math.floor(diff / 60000) % 60;
+  const h = Math.floor(diff / 3600000) % 24;
+  const d = Math.floor(diff / 86400000);
 
-  document.getElementById("counterText").innerHTML =
-    `💞 Together for ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds 🩵`;
+  document.getElementById("counterText").textContent =
+    `💞 Together for ${d} days, ${h} hours, ${m} minutes, ${s} seconds 🩵`;
 }
 
 setInterval(updateCounter, 1000);
 updateCounter();
 
-/* ================= SECRET BUTTON ================= */
+// ===== SECRET BUTTON =====
 function unlockLove() {
   const secret = document.getElementById("secret");
-  const text = document.getElementById("secretText");
-
   if (!secret.classList.contains("show")) {
     secret.classList.add("show");
-    typeWriter(text);
+    typeWriter(document.getElementById("secretText"));
     burstHearts();
     confettiHearts();
   }
 }
 
-/* ================= PHOTO MESSAGE ================= */
+// ===== PHOTO MESSAGE =====
 function photoSurprise() {
   const msg = document.getElementById("photoMsg");
-
   if (!msg.classList.contains("show")) {
     msg.classList.add("show");
     typeWriter(msg);
@@ -507,7 +494,7 @@ function photoSurprise() {
   }
 }
 
-/* ================= FLOATING HEARTS BACKGROUND ================= */
+// ===== FLOATING HEART BACKGROUND =====
 setInterval(() => {
   const heart = document.createElement("div");
   heart.className = "heart";
@@ -519,7 +506,7 @@ setInterval(() => {
   setTimeout(() => heart.remove(), 7000);
 }, 300);
 
-/* ================= BURST HEARTS ================= */
+// ===== BURST HEARTS =====
 function burstHearts() {
   for (let i = 0; i < 25; i++) {
     const heart = document.createElement("div");
@@ -544,7 +531,7 @@ function burstHearts() {
   if (navigator.vibrate) navigator.vibrate(80);
 }
 
-/* ================= HEART CONFETTI ================= */
+// ===== CONFETTI HEARTS =====
 function confettiHearts() {
   for (let i = 0; i < 40; i++) {
     const heart = document.createElement("div");
@@ -558,40 +545,35 @@ function confettiHearts() {
   }
 }
 
-/* ================= FLOWER CONFETTI (SCRATCH CARD) ================= */
-function confettiFlowers() {
-  const flowers = ["🌸","🌺","🌼","🌷","💐"];
-  for (let i = 0; i < 50; i++) {
-    const f = document.createElement("div");
-    f.className = "confetti";
-    f.innerHTML = flowers[Math.floor(Math.random()*flowers.length)];
-    f.style.left = Math.random() * 100 + "vw";
-    f.style.fontSize = Math.random() * 18 + 16 + "px";
-    f.style.animationDuration = Math.random() * 2 + 2 + "s";
-    document.body.appendChild(f);
-    setTimeout(() => f.remove(), 3000);
-  }
-}
-
-/* ================= SCRATCH CARD ================= */
+// ===== SCRATCH CARD =====
 const overlay = document.getElementById("scratchOverlay");
-const scratchCard = document.getElementById("scratchCard");
 const scratchText = document.getElementById("scratchText");
 let scratched = false;
 
-function revealScratch() {
+document.getElementById("scratchCard").addEventListener("pointerdown", () => {
   if (scratched) return;
   scratched = true;
-  overlay.style.transition = "opacity 0.6s ease";
   overlay.style.opacity = "0";
-  typeWriter(scratchText);
-  confettiFlowers();
-  burstHearts();
+  scratchText.style.opacity = "1";
+  setTimeout(() => typeWriter(scratchText), 400);
+  flowerConfetti();
+});
+
+// ===== FLOWER CONFETTI =====
+function flowerConfetti() {
+  for (let i = 0; i < 40; i++) {
+    const flower = document.createElement("div");
+    flower.className = "confetti";
+    flower.innerHTML = ["🌸","🌺","🌷","💐","🌹"][Math.floor(Math.random()*5)];
+    flower.style.left = Math.random() * 100 + "vw";
+    flower.style.fontSize = Math.random() * 18 + 14 + "px";
+    flower.style.animationDuration = Math.random() * 2 + 2 + "s";
+    document.body.appendChild(flower);
+    setTimeout(() => flower.remove(), 3000);
+  }
 }
 
-scratchCard.addEventListener("pointerdown", revealScratch);
-
-/* ================= MINI GAME ================= */
+// ===== MINI GAME =====
 let score = 0;
 const gameArea = document.getElementById("gameArea");
 
