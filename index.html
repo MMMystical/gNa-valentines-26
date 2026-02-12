@@ -31,6 +31,13 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.8s ease;
+}
+
+.lock-screen.hide {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .lock-box {
@@ -41,6 +48,8 @@ body {
   width: 90%;
   max-width: 340px;
   box-shadow: 0 0 35px rgba(0,0,0,0.35);
+  opacity: 1;
+  transition: opacity 0.8s ease;
 }
 
 .lock-title {
@@ -90,20 +99,21 @@ body {
 }
 
 @keyframes floatUp {
-  from {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(-120vh) scale(1.5);
-    opacity: 0;
-  }
+  from { transform: translateY(0) scale(1); opacity: 1; }
+  to { transform: translateY(-120vh) scale(1.5); opacity: 0; }
 }
 
 /* ================= LAYOUT ================= */
 .container {
   padding: 40px 15px;
   display: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.container.show {
+  display: block;
+  opacity: 1;
 }
 
 .name {
@@ -219,7 +229,6 @@ button:hover {
   width: 260px;
   height: 90px;
   margin: auto;
-  background: linear-gradient(45deg, #bbb, #ddd);
   border-radius: 14px;
   position: relative;
   overflow: hidden;
@@ -244,13 +253,7 @@ button:hover {
 .scratch-overlay {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    45deg,
-    #ccc,
-    #ccc 10px,
-    #bbb 10px,
-    #bbb 20px
-  );
+  background: linear-gradient(45deg, #7fd7ff, #4da3ff); /* MATCH SECRET BUTTON */
   z-index: 2;
 }
 
@@ -282,10 +285,7 @@ button:hover {
   animation: pop 0.3s ease;
 }
 
-@keyframes pop {
-  from { transform: scale(0.5); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
+@keyframes pop { from { transform: scale(0.5); opacity:0;} to { transform: scale(1); opacity:1;} }
 
 /* ================= MUSIC ================= */
 .music {
@@ -305,10 +305,7 @@ button:hover {
 }
 
 @keyframes confettiFall {
-  to {
-    transform: translateY(120vh) rotate(720deg);
-    opacity: 0;
-  }
+  to { transform: translateY(120vh) rotate(720deg); opacity:0; }
 }
 </style>
 </head>
@@ -340,7 +337,7 @@ button:hover {
 
   <div class="card">
 
-    <!-- COUNTDOWN -->
+    <!-- COUNTDOWN / TIME SINCE VALENTINE -->
     <div class="countdown" id="countdown">⏳ Loading Valentine’s countdown...</div>
 
     <!-- TIME TOGETHER -->
@@ -395,195 +392,147 @@ button:hover {
 </div>
 
 <script>
-/* ================= PASSWORD SYSTEM ================= */
-const correctPassword = "alan<3"; // CHANGE THIS
+/* ================= PASSWORD ================= */
+const correctPassword = "alan<3";
 
-function checkPassword() {
+function checkPassword(){
   const input = document.getElementById("passwordInput").value;
   const error = document.getElementById("lockError");
+  const lockScreen = document.getElementById("lockScreen");
+  const mainContent = document.getElementById("mainContent");
 
-  if (input === correctPassword) {
-    document.getElementById("lockScreen").style.display = "none";
-    document.getElementById("mainContent").style.display = "block";
+  if(input === correctPassword){
+    lockScreen.classList.add("hide");
+    setTimeout(()=> mainContent.classList.add("show"), 800);
   } else {
     error.classList.add("show");
-    setTimeout(() => error.classList.remove("show"), 1500);
+    setTimeout(()=>error.classList.remove("show"),1500);
   }
 }
 
-/* ================= VALENTINE COUNTDOWN ================= */
-const valentinesDate = new Date(new Date().getFullYear(), 1, 14, 0, 0, 0); // Feb 14
-
-function updateCountdown() {
+/* ================= COUNTDOWN / SINCE VALENTINE ================= */
+const valentinesDate = new Date(new Date().getFullYear(),1,14,0,0,0);
+function updateCountdown(){
   const now = new Date();
   let diff = valentinesDate - now;
-
   const el = document.getElementById("countdown");
 
-  if (diff <= 0) {
-    el.innerHTML = "💖 Happy Valentine’s Day, my love 💖";
-    return;
+  let prefix="", days,hours,minutes,seconds;
+  if(diff>=0){
+    prefix="⏳ Valentine’s Day in ";
+  } else {
+    diff = now - valentinesDate;
+    prefix="💖 It's been ";
   }
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
-  const minutes = Math.floor(diff / (1000 * 60)) % 60;
-  const seconds = Math.floor(diff / 1000) % 60;
+  days = Math.floor(diff/(1000*60*60*24));
+  hours = Math.floor(diff/(1000*60*60))%24;
+  minutes = Math.floor(diff/(1000*60))%60;
+  seconds = Math.floor(diff/1000)%60;
 
-  el.innerHTML = `⏳ Valentine’s Day in <strong>${days}</strong>d 
-                  <strong>${hours}</strong>h 
-                  <strong>${minutes}</strong>m 
-                  <strong>${seconds}</strong>s 💘`;
+  el.innerHTML = `${prefix}<strong>${days}</strong>d <strong>${hours}</strong>h <strong>${minutes}</strong>m <strong>${seconds}</strong>s`;
 }
-
-setInterval(updateCountdown, 1000);
+setInterval(updateCountdown,1000);
 updateCountdown();
 
-/* ================= TIME TOGETHER COUNTER ================= */
-const startDate = new Date("2024-06-01T00:00:00"); // CHANGE THIS
+/* ================= TIME TOGETHER ================= */
+const startDate = new Date("2024-06-01T00:00:00");
 
-function updateCounter() {
+function updateCounter(){
   const now = new Date();
   let diff = now - startDate;
-
-  const seconds = Math.floor(diff / 1000) % 60;
-  const minutes = Math.floor(diff / 1000 / 60) % 60;
-  const hours = Math.floor(diff / 1000 / 60 / 60) % 24;
-  const days = Math.floor(diff / 1000 / 60 / 60 / 24);
+  const seconds = Math.floor(diff/1000)%60;
+  const minutes = Math.floor(diff/1000/60)%60;
+  const hours = Math.floor(diff/1000/60/60)%24;
+  const days = Math.floor(diff/1000/60/60/24);
 
   document.getElementById("counter").innerHTML =
-    `💞 Together for <strong>${days}</strong> days,
-     <strong>${hours}</strong> hours,
-     <strong>${minutes}</strong> minutes,
-     <strong>${seconds}</strong> seconds 🩵`;
+    `💞 Together for <strong>${days}</strong> days, <strong>${hours}</strong> hours, <strong>${minutes}</strong> minutes, <strong>${seconds}</strong> seconds 🩵`;
 }
-
-setInterval(updateCounter, 1000);
+setInterval(updateCounter,1000);
 updateCounter();
 
-/* ================= SECRET BUTTON ================= */
-function unlockLove() {
+/* ================= SECRET ================= */
+function unlockLove(){
   document.getElementById("secret").classList.add("show");
   burstHearts();
   confettiHearts();
 }
 
-/* ================= PHOTO MESSAGE ================= */
-function photoSurprise() {
-  const msg = document.getElementById("photoMsg");
+/* ================= PHOTO ================= */
+function photoSurprise(){
+  const msg=document.getElementById("photoMsg");
   msg.classList.toggle("show");
   confettiHearts();
 }
 
-/* ================= FLOATING HEARTS BACKGROUND ================= */
-setInterval(() => {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "💖";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = Math.random() * 20 + 16 + "px";
-  heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+/* ================= FLOATING HEARTS ================= */
+setInterval(()=>{
+  const heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="💖";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=Math.random()*20+16+"px";
+  heart.style.animationDuration=Math.random()*3+4+"s";
   document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 7000);
-}, 300);
+  setTimeout(()=>heart.remove(),7000);
+},300);
 
 /* ================= BURST HEARTS ================= */
-function burstHearts() {
-  for (let i = 0; i < 25; i++) {
-    const heart = document.createElement("div");
-    heart.innerHTML = "🩵";
-    heart.style.position = "fixed";
-    heart.style.left = "50%";
-    heart.style.top = "50%";
-    heart.style.fontSize = Math.random() * 18 + 16 + "px";
-    heart.style.transform = "translate(-50%, -50%)";
-    heart.style.transition = "all 1s ease";
+function burstHearts(){
+  for(let i=0;i<25;i++){
+    const heart=document.createElement("div");
+    heart.innerHTML="🩵";
+    heart.style.position="fixed";
+    heart.style.left="50%";
+    heart.style.top="50%";
+    heart.style.fontSize=Math.random()*18+16+"px";
+    heart.style.transform="translate(-50%,-50%)";
+    heart.style.transition="all 1s ease";
     document.body.appendChild(heart);
-
-    setTimeout(() => {
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.top = Math.random() * 100 + "vh";
-      heart.style.opacity = "0";
-    }, 50);
-
-    setTimeout(() => heart.remove(), 1200);
+    setTimeout(()=>{
+      heart.style.left=Math.random()*100+"vw";
+      heart.style.top=Math.random()*100+"vh";
+      heart.style.opacity="0";
+    },50);
+    setTimeout(()=>heart.remove(),1200);
   }
-
-  if (navigator.vibrate) navigator.vibrate(80);
+  if(navigator.vibrate) navigator.vibrate(80);
 }
 
-/* ================= HEART CONFETTI ================= */
-function confettiHearts() {
-  for (let i = 0; i < 40; i++) {
-    const heart = document.createElement("div");
-    heart.className = "confetti";
-    heart.innerHTML = ["💝","🩵","💘","🤍"][Math.floor(Math.random()*4)];
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = Math.random() * 16 + 14 + "px";
-    heart.style.animationDuration = Math.random() * 2 + 2 + "s";
+/* ================= CONFETTI ================= */
+function confettiHearts(){
+  for(let i=0;i<40;i++){
+    const heart=document.createElement("div");
+    heart.className="confetti";
+    heart.innerHTML=["💝","🩵","💘","🤍"][Math.floor(Math.random()*4)];
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=Math.random()*16+14+"px";
+    heart.style.animationDuration=Math.random()*2+2+"s";
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 3000);
+    setTimeout(()=>heart.remove(),3000);
   }
 }
-
-/* ================= FLOWER CONFETTI ================= */
-function confettiFlowers() {
-  const flowers = ["🌸","🌺","🌼","🌷","💐"];
-  for (let i = 0; i < 50; i++) {
-    const f = document.createElement("div");
-    f.className = "confetti";
-    f.innerHTML = flowers[Math.floor(Math.random()*flowers.length)];
-    f.style.left = Math.random() * 100 + "vw";
-    f.style.fontSize = Math.random() * 18 + 16 + "px";
-    f.style.animationDuration = Math.random() * 2 + 2 + "s";
+function confettiFlowers(){
+  const flowers=["🌸","🌺","🌼","🌷","💐"];
+  for(let i=0;i<50;i++){
+    const f=document.createElement("div");
+    f.className="confetti";
+    f.innerHTML=flowers[Math.floor(Math.random()*flowers.length)];
+    f.style.left=Math.random()*100+"vw";
+    f.style.fontSize=Math.random()*18+16+"px";
+    f.style.animationDuration=Math.random()*2+2+"s";
     document.body.appendChild(f);
-    setTimeout(() => f.remove(), 3000);
+    setTimeout(()=>f.remove(),3000);
   }
 }
 
-/* ================= SCRATCH CARD ================= */
-const overlay = document.getElementById("scratchOverlay");
-const scratchCard = document.getElementById("scratchCard");
-let scratched = false;
-
-function revealScratch() {
-  if (scratched) return;
-  scratched = true;
-  overlay.style.transition = "opacity 0.6s ease";
-  overlay.style.opacity = "0";
-  confettiFlowers();
-  burstHearts();
-}
-
-scratchCard.addEventListener("pointerdown", revealScratch);
-
-/* ================= MINI GAME ================= */
-let score = 0;
-const gameArea = document.getElementById("gameArea");
-
-function spawnHeart() {
-  const heart = document.createElement("div");
-  heart.className = "tap-heart";
-  heart.innerHTML = "💝";
-  heart.style.left = Math.random() * 85 + "%";
-  heart.style.top = Math.random() * 75 + "%";
-
-  heart.onclick = () => {
-    score++;
-    document.getElementById("score").textContent = score;
-    heart.remove();
-    burstHearts();
-  };
-
-  gameArea.appendChild(heart);
-
-  setTimeout(() => {
-    if (heart.parentNode) heart.remove();
-  }, 2000);
-}
-
-setInterval(spawnHeart, 800);
-</script>
-
-</body>
-</html>
+/* ================= SCRATCH ================= */
+const overlay=document.getElementById("scratchOverlay");
+const scratchCard=document.getElementById("scratchCard");
+let scratched=false;
+scratchCard.addEventListener("pointerdown",()=>{
+  if(scratched) return;
+  scratched=true;
+  overlay.style.transition="opacity 0.6s ease";
+  overlay.style
