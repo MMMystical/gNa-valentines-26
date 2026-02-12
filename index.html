@@ -52,7 +52,15 @@ body {
   font-size: clamp(2.5rem, 6vw, 3.8rem);
   color: #7fd7ff;
   text-shadow: 0 0 10px #7fd7ff, 0 0 25px #7fd7ff;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
+}
+
+/* Countdown */
+.countdown {
+  font-size: 1.1rem;
+  margin-bottom: 22px;
+  color: #e9f9ff;
+  text-shadow: 0 0 10px rgba(255,255,255,0.4);
 }
 
 /* Photo */
@@ -106,12 +114,19 @@ body {
   box-shadow: 0 0 35px rgba(0,0,0,0.25);
 }
 
-.letter {
-  font-size: clamp(1rem, 3.5vw, 1.15rem);
-  line-height: 1.7;
-  margin-bottom: 25px;
+.letter, .counter, .secret-text, .scratch-text, .photo-message, .music {
+  white-space: pre-wrap;
 }
 
+/* Counter */
+.counter {
+  font-size: 1.15rem;
+  margin-bottom: 18px;
+  color: #e9f9ff;
+  text-shadow: 0 0 10px rgba(255,255,255,0.4);
+}
+
+/* Buttons */
 button {
   background: linear-gradient(45deg, #7fd7ff, #4da3ff);
   border: none;
@@ -122,6 +137,7 @@ button {
   cursor: pointer;
   box-shadow: 0 0 18px #7fd7ff;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 10px;
 }
 
 button:hover {
@@ -141,6 +157,51 @@ button:hover {
 #secret.show {
   opacity: 1;
   transform: scale(1);
+}
+
+/* Scratch card */
+.scratch-container {
+  margin-top: 25px;
+  position: relative;
+}
+
+.scratch-card {
+  width: 260px;
+  height: 90px;
+  margin: auto;
+  background: linear-gradient(45deg, #bbb, #ddd);
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.scratch-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #ffeff5;
+  background: rgba(255,255,255,0.12);
+  border-radius: 14px;
+  z-index: 1;
+}
+
+.scratch-overlay {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    #ccc,
+    #ccc 10px,
+    #bbb 10px,
+    #bbb 20px
+  );
+  z-index: 2;
 }
 
 /* Mini game */
@@ -205,35 +266,53 @@ button:hover {
 <body>
 
 <div class="container">
-  <div class="name">Alan 🩵</div>
+  <div class="name type" id="nameText">Alan 🩵</div>
+  <div class="countdown type" id="countdownText">⏳ Countdown to Valentine’s Day...</div>
 
   <!-- PHOTO -->
   <div class="photo" onclick="photoSurprise()">
     <img src="us.png" alt="Us together XD 🩵🤍">
   </div>
-  <div class="photo-message" id="photoMsg">
+  <div class="photo-message type" id="photoMsg">
     This is my favorite picture because we're in it ^^ 💖
   </div>
 
   <div class="card">
-    <div class="letter">
-      Dear Alan,<br><br>
-      From the moment you came into my life, everything felt warmer, brighter,
-      and more alive. You make me feel safe, loved, and understood in ways
-      I never knew were possible.<br><br>
 
-      I love how passionate you are... especially about games, music,
-      and being unapologetically yourself. Loving you is easy. I hope that today is filled with the same joy you bring into my life.<br><br>
+    <!-- TIME TOGETHER -->
+    <div class="counter type" id="counterText">💞 Together for ...</div>
 
-      Your heart is fragile and sensitive just like mine, but I'm as careful as possible with it. Happy Valentine's Day! 💖
+    <div class="letter type" id="letterText">
+Dear Alan,
+
+From the moment you came into my life, everything felt warmer, brighter,
+and more alive. You make me feel safe, loved, and understood in ways
+I never knew were possible.
+
+I love how passionate you are... especially about games, music,
+and being unapologetically yourself. Loving you is easy. I hope that today is filled with the same joy you bring into my life.
+
+Your heart is fragile and sensitive just like mine, but I'm as careful as possible with it. Happy Valentine's Day! 💖
     </div>
 
     <button onclick="unlockLove()">💘 Click for a secret</button>
 
     <div id="secret">
-      🩵 Secret 🤍<br>
-      <strong>All I need in this life is you and me. Oh, and WiFi. And wine. And snacks. But that’s it, I swear.<br>
-      I’m yours. Sorry, no refunds or exchanges. I know loving me isn’t always the easiest. But trust me, I’m worth it.</strong> 💖
+      <div class="secret-text type" id="secretText">
+🩵 Secret 🤍
+
+All I need in this life is you and me. Oh, and WiFi. And wine. And snacks. But that’s it, I swear.
+I’m yours. Sorry, no refunds or exchanges. I know loving me isn’t always the easiest. But trust me, I’m worth it. 💖
+      </div>
+    </div>
+
+    <!-- SCRATCH TO REVEAL -->
+    <div class="scratch-container">
+      <div style="margin-bottom:8px;">💌 Scratch to reveal</div>
+      <div class="scratch-card" id="scratchCard">
+        <div class="scratch-text type" id="scratchText">I choose you. Always. 💖</div>
+        <div class="scratch-overlay" id="scratchOverlay"></div>
+      </div>
     </div>
 
     <!-- MINI GAME -->
@@ -242,32 +321,95 @@ button:hover {
       <div class="game-area" id="gameArea"></div>
     </div>
 
-    <div class="music">
-      🎵 Your favorite songs:<br><br>
-      • <em>Feel Alone</em> — Juice WRLD<br>
-      • <em>Creepin'</em> — Metro Boomin, The Weeknd & 21 Savage<br>
-      • <em>Castle</em> — Clarx, Harddope<br>
-      • <em>Love The Way You Lie</em> — Eminem & Rihanna<br>
-      • <em>Drivers License</em> — Olivia Rodrigo
+    <div class="music type" id="musicText">
+🎵 Your favorite songs:
+
+• Feel Alone — Juice WRLD
+• Creepin' — Metro Boomin, The Weeknd & 21 Savage
+• Castle — Clarx, Harddope
+• Love The Way You Lie — Eminem & Rihanna
+• Drivers License — Olivia Rodrigo
     </div>
   </div>
 </div>
 
 <script>
+/* ===================== TYPEWRITER EFFECT ===================== */
+function typeWriter(element, speed = 18) {
+  const text = element.innerText;
+  element.innerText = "";
+  let i = 0;
+  const interval = setInterval(() => {
+    element.innerText += text.charAt(i);
+    i++;
+    if (i >= text.length) clearInterval(interval);
+  }, speed);
+}
+
+window.onload = () => {
+  document.querySelectorAll(".type").forEach((el, i) => {
+    setTimeout(() => typeWriter(el), i * 300);
+  });
+};
+
+/* ===================== COUNTDOWN TO VALENTINE'S ===================== */
+const valentines = new Date(new Date().getFullYear(), 1, 14, 0, 0, 0); // Feb = 1
+
+function updateCountdown() {
+  const now = new Date();
+  let diff = valentines - now;
+
+  if (diff <= 0) {
+    document.getElementById("countdownText").innerHTML = "💖 Happy Valentine's Day, Alan! 💖";
+    return;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+  const minutes = Math.floor(diff / (1000 * 60)) % 60;
+  const seconds = Math.floor(diff / 1000) % 60;
+
+  document.getElementById("countdownText").innerHTML =
+    `💘 Valentine’s Day in ${days}d ${hours}h ${minutes}m ${seconds}s 💘`;
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+/* ===================== TIME TOGETHER COUNTER ===================== */
+const startDate = new Date("2024-06-01T00:00:00"); // CHANGE THIS
+
+function updateCounter() {
+  const now = new Date();
+  let diff = now - startDate;
+
+  const seconds = Math.floor(diff / 1000) % 60;
+  const minutes = Math.floor(diff / 1000 / 60) % 60;
+  const hours = Math.floor(diff / 1000 / 60 / 60) % 24;
+  const days = Math.floor(diff / 1000 / 60 / 60 / 24);
+
+  document.getElementById("counterText").innerHTML =
+    `💞 Together for ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds 🩵`;
+}
+
+setInterval(updateCounter, 1000);
+updateCounter();
+
+/* ===================== SECRET BUTTON ===================== */
 function unlockLove() {
   document.getElementById("secret").classList.add("show");
   burstHearts();
   confettiHearts();
 }
 
-/* Photo hidden message */
+/* ===================== PHOTO MESSAGE ===================== */
 function photoSurprise() {
   const msg = document.getElementById("photoMsg");
   msg.classList.toggle("show");
   confettiHearts();
 }
 
-/* Floating hearts background */
+/* ===================== FLOATING HEARTS BACKGROUND ===================== */
 setInterval(() => {
   const heart = document.createElement("div");
   heart.className = "heart";
@@ -279,7 +421,7 @@ setInterval(() => {
   setTimeout(() => heart.remove(), 7000);
 }, 300);
 
-/* Burst hearts */
+/* ===================== BURST HEARTS ===================== */
 function burstHearts() {
   for (let i = 0; i < 25; i++) {
     const heart = document.createElement("div");
@@ -304,7 +446,7 @@ function burstHearts() {
   if (navigator.vibrate) navigator.vibrate(80);
 }
 
-/* Confetti hearts */
+/* ===================== HEART CONFETTI ===================== */
 function confettiHearts() {
   for (let i = 0; i < 40; i++) {
     const heart = document.createElement("div");
@@ -318,7 +460,38 @@ function confettiHearts() {
   }
 }
 
-/* Mini game */
+/* ===================== FLOWER CONFETTI (SCRATCH CARD) ===================== */
+function confettiFlowers() {
+  const flowers = ["🌸","🌺","🌼","🌷","💐"];
+  for (let i = 0; i < 50; i++) {
+    const f = document.createElement("div");
+    f.className = "confetti";
+    f.innerHTML = flowers[Math.floor(Math.random()*flowers.length)];
+    f.style.left = Math.random() * 100 + "vw";
+    f.style.fontSize = Math.random() * 18 + 16 + "px";
+    f.style.animationDuration = Math.random() * 2 + 2 + "s";
+    document.body.appendChild(f);
+    setTimeout(() => f.remove(), 3000);
+  }
+}
+
+/* ===================== SCRATCH CARD ===================== */
+const overlay = document.getElementById("scratchOverlay");
+const scratchCard = document.getElementById("scratchCard");
+let scratched = false;
+
+function revealScratch() {
+  if (scratched) return;
+  scratched = true;
+  overlay.style.transition = "opacity 0.6s ease";
+  overlay.style.opacity = "0";
+  confettiFlowers();
+  burstHearts();
+}
+
+scratchCard.addEventListener("pointerdown", revealScratch);
+
+/* ===================== MINI GAME ===================== */
 let score = 0;
 const gameArea = document.getElementById("gameArea");
 
@@ -348,5 +521,3 @@ setInterval(spawnHeart, 800);
 
 </body>
 </html>
-
-
